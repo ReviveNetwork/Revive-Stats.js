@@ -30,16 +30,16 @@ const Soldier = function() {
         .then(getunlocksinfo);
 };
 const toSoldiers = function(arr) {
-
     let plist = new Array();
     let head = arr[0];
     arr = arr.slice(1);
-    arr.forEach((p) => plist.push(toSoldier(p, head)));
-
+    arr.map(p => {let s = toSoldier(p, head);if(!s)plist.push(s)});
     return plist;
 };
 const toSoldier = function(p, head) {
     let s = new Soldier();
+	if(!p ||!head)
+	{return null;}
     for (let i = 0; i < p.length; i++) {
         s[head[i]] = p[i];
     }
