@@ -35,12 +35,15 @@ const toSoldiers = function(arr) {
     let plist = new Array();
     let head = arr[0];
     arr = arr.slice(1);
-    arr.map(p => {let s = toSoldier(p, head);if(!s)plist.push(s)});
+    arr.map(p => plist.push(toSoldier(p,head)));
     return plist;
 };
 const toSoldier = function(p, head) {
 	if(!p)
 	{return undefined;}
+	if(!head)
+	{let head = arr[0];
+    arr = arr.slice(1);}
     let s = new Soldier();
     for (let i = 0; i < p.length; i++) {
         s[head[i]] = p[i];
