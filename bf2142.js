@@ -6,7 +6,7 @@ const getPlayers = (nick) => getAuthToken(0).then(auth => request(getOptions('ht
 const getLeaderBoard = (type, id, n) => getAuthToken(0).then(auth => request(getOptions('http://s.bf2142.us/getleaderboard.aspx?type=' + type + '&id=' + id + '&pos=0&after=' + n + '&auth=' + auth))
     .catch(console.log)
     .then(parser.parse).then(toSoldiers));
-const getPlayer = (pid) => getAuthToken(pid).then(auth => request(getOptions('http://s.bf2142.us/ASP/getplayerinfo.aspx?auth=' + auth + '&mode=' + base))
+const getPlayer = (pid) => getAuthToken(pid).then(auth => request(getOptions('http://s.bf2142.us/ASP/getplayerinfo.aspx?auth=' + auth + '&mode=base'))
     .catch(console.log)
     .then(parser.parse).then(toSoldier));
 const getOptions = function(URL) {
