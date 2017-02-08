@@ -42,8 +42,8 @@ const toSoldier = function(p, head) {
 	if(!p)
 	{return undefined;}
 	if(!head)
-	{let head = arr[0];
-    arr = arr.slice(1);}
+	{let head = p[0];
+    p = p.slice(1);}
     let s = new Soldier();
     for (let i = 0; i < p.length; i++) {
         s[head[i]] = p[i];
