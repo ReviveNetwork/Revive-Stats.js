@@ -30,6 +30,8 @@ const Soldier = function() {
         .then(getunlocksinfo));
 };
 const toSoldiers = function(arr) {
+	if(!arr)
+	{return undefined;}
     let plist = new Array();
     let head = arr[0];
     arr = arr.slice(1);
@@ -37,9 +39,9 @@ const toSoldiers = function(arr) {
     return plist;
 };
 const toSoldier = function(p, head) {
+	if(!p)
+	{return undefined;}
     let s = new Soldier();
-	if(!p ||!head)
-	{return null;}
     for (let i = 0; i < p.length; i++) {
         s[head[i]] = p[i];
     }
