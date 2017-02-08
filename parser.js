@@ -1,17 +1,18 @@
 module.exports.parse = (text) => {
 	let arr = text.split('\n');
-	let arr2 =[];
+	console.log(arr);
 	let head =null;
-	arr2.push(arr.map(line => {
-		if(line.startsWith('H'))
-			head = line;
-		return line.split('\t').slice(1);
+	for(let i=0;i<arr.length-1;i++)
+	{
+		arr[i] = arr[i].split('\t');
+		if(arr[i][0]=='H')
+			head = arr[i];
 	}
-	)
-	);
-	arr = arr2;
-	arr2= null;
-	head = head.split('\t').slice(1);
+	arr.pop();
 	arr = arr.slice(arr.indexOf(head));
+	for(let i=0;i<arr.length;i++)
+	{
+		arr[i].shift();
+	}
 	return arr;
 }
