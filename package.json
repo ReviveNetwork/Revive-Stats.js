@@ -1,0 +1,28 @@
+{
+  "name": "revive-stats.js",
+  "version": "1.0.0",
+  "description": "Revive Bf2 and Bf2142 stats lib",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ReviveNetwork/Revive-Stats.js.git"
+  },
+  "keywords": [
+    "bf2",
+    "bf2142",
+    "revive",
+    "network"
+  ],
+  "author": "Melroy",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ReviveNetwork/Revive-Stats.js/issues"
+  },
+  "homepage": "https://github.com/ReviveNetwork/Revive-Stats.js#readme",
+  "dependencies": {
+    "request-promise": "^4.1.1"
+  }
+}
