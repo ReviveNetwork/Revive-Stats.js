@@ -9,7 +9,7 @@ const getLeaderBoard = (type,id,n) => request(getOptions('http://bf2web.game.bf2
 const getPlayer = (pid) => request(getOptions('http://bf2web.game.bf2.us/ASP/getplayerinfo.aspx?pid=' + pid))
 	.catch(console.log)
     .then(parser.parse).then(toSoldier);
-const getOptions = fucntion(URL){
+const getOptions = function(URL){
 	return { 
 		url:URL,
 		headers: {
@@ -29,7 +29,7 @@ const Soldier =  function(){
 							.then(parser.parse)
 							.then(getunlocksinfo);
 };
-const toSoldiers = fucntion(arr){
+const toSoldiers = function(arr){
 	let plist = new Array();
 	let head = arr[0];
 	arr = arr.slice(1);
@@ -51,7 +51,7 @@ const modifySoldier = function(s,head,data){
 		}
 		return s;
 };
-const getAwards(arr)
+const getAwards = function(arr)
 	{
 		let head = arr[0];
 		arr = arr.slice(1);
@@ -67,7 +67,7 @@ const getAwards(arr)
 		);
 		return awards;
 	};
-const getunlocksinfo(arr)
+const getunlocksinfo = function(arr)
 	{
 		let head = arr[0];
 		arr = arr.slice(1);

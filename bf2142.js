@@ -9,7 +9,7 @@ const getLeaderBoard = (type,id,n) =>  getAuthToken(0).then(auth => request(getO
 const getPlayer = (pid) => getAuthToken(pid).then(auth => request(getOptions('http://s.bf2142.us/ASP/getplayerinfo.aspx?auth=' + auth+'&mode='+base))
 	.catch(console.log)
     .then(parser.parse).then(toSoldier));
-const getOptions = fucntion(URL){
+const getOptions = function(URL){
 	return { 
 		url:URL,
 		headers: {
@@ -29,7 +29,7 @@ const Soldier =  function(){
 							.then(parser.parse)
 							.then(getunlocksinfo));
 };
-const toSoldiers = fucntion(arr){
+const toSoldiers = function(arr){
 	let plist = new Array();
 	let head = arr[0];
 	arr = arr.slice(1);
@@ -51,7 +51,7 @@ const modifySoldier = function(s,head,data){
 		}
 		return s;
 };
-const getAwards(arr)
+const getAwards = function(arr)
 	{
 		let head = arr[0];
 		arr = arr.slice(1);
@@ -67,7 +67,7 @@ const getAwards(arr)
 		);
 		return awards;
 	};
-const getunlocksinfo(arr)
+const getunlocksinfo = function(arr)
 	{
 		let head = arr[0];
 		arr = arr.slice(1);
