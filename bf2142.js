@@ -24,7 +24,7 @@ const Soldier =  function(){
 							.catch(console.log)
 							.then(parser.parse)
 							.then(getAwards));
-	this.getUnlocks = () => getAuthToken(pid).then(auth =>request(getOptions('http://s.bf2142.us/getunlocksinfo.aspx?auth=' + auth)
+	this.getUnlocks = () => getAuthToken(pid).then(auth =>request(getOptions('http://s.bf2142.us/getunlocksinfo.aspx?auth=' + auth))
 							.catch(console.log)
 							.then(parser.parse)
 							.then(getunlocksinfo));
