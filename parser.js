@@ -7,6 +7,8 @@ module.exports.parse = (text) => {
 		arr[i] = arr[i].split('\t');
 		if(arr[i][0]=='H')
 			head = arr[i];
+		if(arr[i][0]=='$')
+		{arr.splice(i,1)}
 	}
 	arr.pop();
 	arr = arr.slice(arr.indexOf(head));
