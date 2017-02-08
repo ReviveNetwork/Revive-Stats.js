@@ -6,7 +6,7 @@ const getPlayers = (nick) => request(getOptions('http://bf2web.game.bf2.us/ASP/s
 const getLeaderBoard = (type,id,n) => request(getOptions('http://bf2web.game.bf2.us/ASP/getleaderboard.aspx?type=' + type + '&id='+id+'after='+n))
 	.catch(console.log)
     .then(parser.parse).then(toSoldiers);
-const getPlayer = (pid) => request(getOptions('http://bf2web.game.bf2.us/ASP/getplayerinfo.aspx?pid=' + pid))
+const getPlayer = (pid) => request(getOptions('http://bf2web.game.bf2.us/ASP/getplayerinfo.aspx?pid=' + pid+'&info=rank'))
 	.catch(console.log)
     .then(parser.parse).then(toSoldier);
 const getOptions = function(URL){
