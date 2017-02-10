@@ -8,7 +8,7 @@ const getLeaderBoard = (type, id, n) => getAuthToken(0).then(auth => request(get
     .then(parser.parse).then(p =>toSoldiers(p.arr,p.head)));
 const getPlayer = (pid) => getAuthToken(pid).then(auth => request(getOptions('http://s.bf2142.us/getplayerinfo.aspx?auth=' + auth + '&mode=base'))
     .catch(console.log)
-    .then(body => parser.parse(body,2)).then(p =>toSoldier(p.arr,p.head))).catch(console.log);
+    .then(body => parser.parse(body,2)).then(p =>toSoldier(p.arr[0],p.head))).catch(console.log);
 const getOptions = function(URL) {
     return {
         url: URL,

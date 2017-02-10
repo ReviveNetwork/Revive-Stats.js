@@ -29,9 +29,8 @@ module.exports.parse = (text,headcount) => {
 	{
 		arr[i].shift();
 	}
-	if(arr.length===1)
-	{arr= arr[0]}
 	head.shift();
-	//console.log(head);
+	console.log(head);
+	console.log(arr);
 	return {'arr':arr,'head':head};
 }
