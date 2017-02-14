@@ -23,14 +23,16 @@ module.exports.parse = (text,headcount) => {
 		{arr.splice(i,1)}
 	}
 	if(head==undefined)
-	{return undefined;}
+	{return {};}
 	arr = arr.slice(arr.indexOf(head+1));
 	for(let i=0;i<arr.length;i++)
 	{
 		arr[i].shift();
 	}
 	head.shift();
-	console.log(head);
-	console.log(arr);
+	if(arr.includes(head))
+	return {}
+	//console.log(head);
+	//console.log(arr);
 	return {'arr':arr,'head':head};
 }
