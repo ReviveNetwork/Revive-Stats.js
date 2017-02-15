@@ -1,6 +1,6 @@
 const crc = require('./lib/crc16-ccitt').crc16;
 const CryptoJS = require('crypto-js');
-const key = '4CBB56AA780000C365FFEF4423122C2C';
+const key ='L\xbbV\xaax\x00\x00\xc3e\xff\xefD#\x12,,';
 //const eas = require('./lib/eas');
 const iv = '\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0';
 module.exports.getToken = function(pid){
