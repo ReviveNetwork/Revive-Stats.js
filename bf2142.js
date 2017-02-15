@@ -1,14 +1,15 @@
 const request = require('request-promise');
 const parser = require('./parser');
-const getPlayers = (nick) => getAuthToken(0).then(auth => request(getOptions('http://s.bf2142.us/playersearch.aspx?nick=' + nick + '&auth=' + auth))
+const auth = require('./authToken.js').getToken;
+const getPlayers = (nick) => request(getOptions('http://s.bf2142.us/playersearch.aspx?nick=' + nick + '&auth=' + auth(0)))
     .catch(console.log)
-    .then(parser.parse).then(toSoldiers));
-const getLeaderBoard = (type, id, n) => getAuthToken(0).then(auth => request(getOptions('http://s.bf2142.us/getleaderboard.aspx?type=' + type + '&id=' + id + '&pos=0&after=' + n + '&auth=' + auth))
+    .then(parser.parse).then(toSoldiers);
+const getLeaderBoard = (type, id, n) => request(getOptions('http://s.bf2142.us/getleaderboard.aspx?type=' + type + '&id=' + id + '&pos=0&after=' + n + '&auth=' + auth(0)))
     .catch(console.log)
-    .then(parser.parse).then(toSoldiers));
-const getPlayer = (pid) => getAuthToken(pid).then(auth => request(getOptions('http://s.bf2142.us/getplayerinfo.aspx?auth=' + auth + '&mode=base'))
+    .then(parser.parse).then(toSoldiers);
+const getPlayer = (pid) => request(getOptions('http://s.bf2142.us/getplayerinfo.aspx?auth=' + auth(pid) + '&mode=base'))
     .catch(console.log)
-    .then(parser.parse).then(toSoldier));
+    .then(parser.parse).then(toSoldier);
 const getOptions = function(URL) {
     return {
         url: URL,
@@ -20,14 +21,14 @@ const getOptions = function(URL) {
 exports.getPlayers = getPlayers;
 const Soldier = function() {
     this.pid = 0;
-    this.getAwards = () => getAuthToken(pid).then(auth => request(getOptions('http://s.bf2142.us/getawardsinfo.aspx?auth=' + auth))
+    this.getAwards = () => request(getOptions('http://s.bf2142.us/getawardsinfo.aspx?auth=' + auth(this.pid)))
         .catch(console.log)
         .then(parser.parse)
-        .then(getAwards));
-    this.getUnlocks = () => getAuthToken(pid).then(auth => request(getOptions('http://s.bf2142.us/getunlocksinfo.aspx?auth=' + auth))
+        .then(getAwards);
+    this.getUnlocks = () => request(getOptions('http://s.bf2142.us/getunlocksinfo.aspx?auth=' + auth(this.pid)))
         .catch(console.log)
         .then(parser.parse)
-        .then(getunlocksinfo));
+        .then(getunlocksinfo);
 };
 const toSoldiers = function(arr) {
 	if(!arr)
@@ -85,8 +86,3 @@ const getunlocksinfo = function(arr) {
 module.exports.getPlayer = getPlayer;
 module.exports.getPlayers = getPlayers;
 module.exports.getLeaderBoard = getLeaderBoard;
-const getAuthToken = (pid) => request('http://bf2142auth.herokuapp.com?pid=' + pid).then(body => {
-    console.log('pid: ' + pid);
-    console.log(body);
-    return body.trim();
-});
