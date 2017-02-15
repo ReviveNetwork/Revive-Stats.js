@@ -8,10 +8,11 @@ module.exports.getToken = function(pid){
 	code += crc(code).toString().substr(0,4);
 	console.log(code);
 	code = hex2a(code);
-	code = CryptoJS.AES.encrypt(code, key, { iv: iv }).toString();
+	console.log(code);
+	code = CryptoJS.AES.encrypt(code, key,{ iv: iv, padding: CryptoJS.pad.NoPadding, mode: CryptoJS.mode.CBC}).toString();
 	//code = eas.DefEncryptBlock(eas.hex2str(code));
 	console.log(code);
-	code = new Buffer(code).toString('base64');
+	//code = new Buffer(code).toString('base64');
 	code = code.replace(/=/g,'_').replace(/\//g,']').replace(/\+/g,'[');
 	console.log(code);
 	return code;	
