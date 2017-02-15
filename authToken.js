@@ -8,7 +8,8 @@ module.exports.getToken = function(pid){
 	//console.log(code);
 	code = CryptoJS.AES.encrypt(code, key, { iv: iv }).toString();
 	code = new Buffer(code).toString('base64');
-	code = code.replace('=','_').replace('/',']').replace('+','[');
+	code = code.replace(/=/g,'_').replace(/\//g,']').replace(/\+/g,'[');
+	//console.log(code);
 	return code;	
 }
 function dwh(h)
