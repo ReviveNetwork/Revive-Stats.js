@@ -4,7 +4,7 @@ const key ='L\xbbV\xaax\x00\x00\xc3e\xff\xefD#\x12,,';
 //const eas = require('./lib/eas');
 const iv = '\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0';
 module.exports.getToken = function(pid){
-	code = dwh(dechex(new Date().getTime()))+'640000'+dwh(dechex(pid))+"0000"; 
+	code = dwh(dechex(new Date().getTime()))+'64000000'+dwh(dechex(pid))+"0000"; 
 	code += crc(code).toString().substr(0,4);
 	console.log(code);
 	code = hex2a(code);
