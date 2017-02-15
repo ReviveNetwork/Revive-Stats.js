@@ -7,6 +7,7 @@ module.exports.getToken = function(pid){
 	code = dwh(dechex(new Date().getTime()))+'640000'+dwh(dechex(pid))+"0000"; 
 	code += crc(code).toString().substr(0,4);
 	console.log(code);
+	code = hex2a(code);
 	code = CryptoJS.AES.encrypt(code, key, { iv: iv }).toString();
 	//code = eas.DefEncryptBlock(eas.hex2str(code));
 	console.log(code);
@@ -28,4 +29,12 @@ function dechex(number)
 		number = 0xFFFFFFFF + number + 1;
 	}
 	return parseInt(number, 10).toString(16);
+}
+function hex2a(hex) {
+	var str = '';
+	for (var i = 0; i < hex.length; i += 2) {
+		var v = parseInt(hex.substr(i, 2), 16);
+		if (v) str += String.fromCharCode(v);
+	}
+	return str;
 }
