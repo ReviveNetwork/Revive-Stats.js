@@ -23,7 +23,7 @@ module.exports.parseToken = function(token) {
         padding: CryptoJS.pad.NoPadding,
         mode: CryptoJS.mode.CBC
     }).toString();
-	//console.log(token);
+	console.log(token);
 	let timestamp = hexdec(token[6]+token[7]+token[4]+token[5]+token[2]+token[3]+token[0]+token[1]);
 	//console.log(timestamp);
 	let magic = token.substr(8,8);
@@ -34,12 +34,14 @@ module.exports.parseToken = function(token) {
 	let padding = token.substr(26,2);
 	let tcrc = token.substr(28,4);
 	//console.log(tcrc);
-	if(magic!=='64000000')
+	if(!(magic=='64000000'||magic=='78000000'))
 	{return false;}
 	//console.log('passed magic');
-	if(crc(token.substring(0,28)).toString().substr(0, 4) !== tcrc)
+	let acrc = crc(token.substring(0,28)).toString().substr(0, 4);
+	//console.log('actual crc:'+acrc)
+	if(acrc !== tcrc)
 	{return false;}
-	if((timestamp+708)>(Date.now()/1000))
+	if((timestamp+708)<(Date.now()/1000))
 	{return false;}
 	isServer = isServer==='00'?false:true;
 	return {pid:pid,isServer:isServer};
