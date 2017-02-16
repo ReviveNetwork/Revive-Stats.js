@@ -1,11 +1,12 @@
-const crc = require('./lib/crc16-ccitt').crc16;
+const crc = require('crc').crc16xmodem;
 const CryptoJS = require('crypto-js');
 const key = CryptoJS.enc.Hex.parse('4CBB56AA780000C365FFEF4423122C2C')
 const iv = CryptoJS.enc.Hex.parse('00000000000000000000000000000000')
 
 module.exports.getToken = function(pid) {
     code = dwh(dechex(parseInt(Date.now()/1000))) + dwh(dechex(100)) + dwh(dechex(pid)) + "0000"
-    code += crc(code).toString().substr(0, 4)
+    let tcrc = crc(code).toString(16);
+	code += tcrc.substr(2,2)+tcrc.substr(0,2);
     code = CryptoJS.enc.Hex.parse(code)
     code = CryptoJS.AES.encrypt(code, key, {
         iv: iv,
@@ -33,12 +34,13 @@ module.exports.parseToken = function(token) {
 	let isServer = token.substr(24,2);
 	let padding = token.substr(26,2);
 	let tcrc = token.substr(28,4);
-	//console.log(tcrc);
+	console.log(tcrc);
 	if(!(magic=='64000000'||magic=='78000000'))
 	{return false;}
 	//console.log('passed magic');
-	let acrc = crc(token.substring(0,28)).toString().substr(0, 4);
-	//console.log('actual crc:'+acrc)
+	let acrc = dechex(crc(token.substring(0,28))).toString();
+	acrc = acrc.substr(2,2)+acrc.substr(0,2)
+	console.log('actual crc:'+acrc)
 	if(acrc !== tcrc)
 	{return false;}
 	if((timestamp+708)<(Date.now()/1000))

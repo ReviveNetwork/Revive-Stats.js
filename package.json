@@ -1,6 +1,6 @@
 {
   "name": "revive-stats.js",
-  "version": "1.2.3",
+  "version": "1.2.5",
   "description": "Revive Bf2 and Bf2142 stats lib",
   "main": "index.js",
   "scripts": {
@@ -24,6 +24,7 @@
   "homepage": "https://github.com/ReviveNetwork/Revive-Stats.js#readme",
   "dependencies": {
     "request": "^2.79.0",
-    "request-promise": "^4.1.1"
+    "request-promise": "^4.1.1",
+    "crypto-js":"^3.1.9-1"
   }
 }
