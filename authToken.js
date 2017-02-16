@@ -4,8 +4,9 @@ const key = CryptoJS.enc.Hex.parse('4CBB56AA780000C365FFEF4423122C2C')
 const iv = CryptoJS.enc.Hex.parse('00000000000000000000000000000000')
 
 module.exports.getToken = function(pid) {
-    code = dwh(dechex(Date.now())) + dwh(dechex(100)) + dwh(dechex(pid)) + "0000"
+    code = dwh(dechex(parseInt(Date.now()/1000))) + dwh(dechex(100)) + dwh(dechex(pid)) + "0000"
     code += crc(code).toString().substr(0, 4)
+    console.log(code)
     code = CryptoJS.enc.Hex.parse(code)
     code = CryptoJS.AES.encrypt(code, key, {
         iv: iv,
