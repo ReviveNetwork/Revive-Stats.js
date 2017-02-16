@@ -5,8 +5,8 @@ const iv = CryptoJS.enc.Hex.parse('00000000000000000000000000000000')
 
 module.exports.getToken = function(pid) {
     code = dwh(dechex(parseInt(Date.now()/1000))) + dwh(dechex(100)) + dwh(dechex(pid)) + "0000"
-    let tcrc = crc(code).toString(16);
-	code += tcrc.substr(2,2)+tcrc.substr(0,2);
+    let acrc = dechex(crc(new Buffer(code,'hex'))).toString();
+	code += acrc.substr(2,2)+acrc.substr(0,2)
     code = CryptoJS.enc.Hex.parse(code)
     code = CryptoJS.AES.encrypt(code, key, {
         iv: iv,
@@ -24,7 +24,7 @@ module.exports.parseToken = function(token) {
         padding: CryptoJS.pad.NoPadding,
         mode: CryptoJS.mode.CBC
     }).toString();
-	console.log(token);
+	//console.log(token);
 	let timestamp = hexdec(token[6]+token[7]+token[4]+token[5]+token[2]+token[3]+token[0]+token[1]);
 	//console.log(timestamp);
 	let magic = token.substr(8,8);
@@ -34,14 +34,14 @@ module.exports.parseToken = function(token) {
 	let isServer = token.substr(24,2);
 	let padding = token.substr(26,2);
 	let tcrc = token.substr(28,4);
-	console.log(tcrc);
+	//console.log(tcrc);
 	if(!(magic=='64000000'||magic=='78000000'))
 	{return false;}
 	//console.log('passed magic');
-	let acrc = dechex(crc(token.substring(0,28))).toString();
+	let acrc = dechex(crc(new Buffer(token.substring(0,28),'hex'))).toString();
 	acrc = acrc.substr(2,2)+acrc.substr(0,2)
-	console.log('actual crc:'+acrc)
-	if(acrc !== tcrc)
+	//console.log('actual crc:'+acrc)
+	if(acrc.trim() !== tcrc.trim())
 	{return false;}
 	if((timestamp+708)<(Date.now()/1000))
 	{return false;}
@@ -66,4 +66,11 @@ function hexdec(hexString)
 	//http://locutus.io/php/math/hexdec/
 	hexString = (hexString + '').replace(/[^a-f0-9]/gi, '')
 	return parseInt(hexString, 16);
+}
+function hex2a(hexx) {
+    var hex = hexx.toString();//force conversion
+    var str = '';
+    for (var i = 0; i < hex.length; i += 2)
+        str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+    return str;
 }
