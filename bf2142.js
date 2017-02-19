@@ -3,15 +3,15 @@ const parser = require('./parser');
 const auth = require('./authToken.js').getToken;
 const getPlayers = (nick) => request(getOptions('http://s.bf2142.us/playersearch.aspx?nick=' + nick + '&auth=' + auth(0)))
     .catch(console.log)
-    .then(parser.parse).then(p => toSoldiers(p.arr, p.head)).then(p => p.sort((a, b) => {
-		//console.log(a.nick);
-        if (a.nick.toLowerCase() === nick.toLowerCase())
-		return -1;
-		else if (b.nick.toLowerCase() === nick.toLowerCase())
-		return 1;
-		else
-		return 0;
-    }));
+    .then(parser.parse).then(p => toSoldiers(p.arr, p.head)).then(p => p.sort(function(a, b)
+	{
+		let aStart = a.nick.match(new RegExp('^'+nick, 'i')) || [],
+         bStart = b.nick.match(new RegExp('^'+nick, 'i')) || [];
+
+		if ( aStart.length != bStart.length ) return bStart.length - aStart.length;
+
+		else return a.nick > b.nick ? 1 : -1;
+	}));
 const getLeaderBoard = (type, id, n) => request(getOptions('http://s.bf2142.us/getleaderboard.aspx?type=' + type + '&id=' + id + '&pos=0&after=' + n + '&auth=' + auth(0)))
     .catch(console.log)
     .then(parser.parse).then(p => toSoldiers(p.arr, p.head));
