@@ -3,13 +3,21 @@ const parser = require('./parser');
 const auth = require('./authToken.js').getToken;
 const getPlayers = (nick) => request(getOptions('http://s.bf2142.us/playersearch.aspx?nick=' + nick + '&auth=' + auth(0)))
     .catch(console.log)
-    .then(parser.parse).then(p => toSoldiers(p.arr,p.head));
+    .then(parser.parse).then(p => toSoldiers(p.arr, p.head)).then(p => p.sort((a, b) => {
+		//console.log(a.nick);
+        if (a.nick.toLowerCase() === nick.toLowerCase())
+		return -1;
+		else if (b.nick.toLowerCase() === nick.toLowerCase())
+		return 1;
+		else
+		return 0;
+    }));
 const getLeaderBoard = (type, id, n) => request(getOptions('http://s.bf2142.us/getleaderboard.aspx?type=' + type + '&id=' + id + '&pos=0&after=' + n + '&auth=' + auth(0)))
     .catch(console.log)
-    .then(parser.parse).then(p => toSoldiers(p.arr,p.head));
+    .then(parser.parse).then(p => toSoldiers(p.arr, p.head));
 const getPlayer = (pid) => request(getOptions('http://s.bf2142.us/getplayerinfo.aspx?auth=' + auth(pid) + '&mode=base'))
     .catch(console.log)
-    .then(res => parser.parse(res,2)).then(p => toSoldier(p.arr[0],p.head));
+    .then(res => parser.parse(res, 2)).then(p => toSoldier(p.arr[0], p.head));
 const getOptions = function(URL) {
     return {
         url: URL,
@@ -24,23 +32,24 @@ const Soldier = function() {
     this.getAwards = () => getAuthToken(pid).then(auth => request(getOptions('http://s.bf2142.us/getawardsinfo.aspx?auth=' + auth(pid)))
         .catch(console.log)
         .then(parser.parse)
-        .then(p=> getAwards(p.arr,p.head)));
+        .then(p => getAwards(p.arr, p.head)));
     this.getUnlocks = () => getAuthToken(pid).then(auth => request(getOptions('http://s.bf2142.us/getunlocksinfo.aspx?auth=' + auth(pid)))
         .catch(console.log)
         .then(parser.parse)
-        .then(p=>getunlocksinfo(p.arr,p.head)));
+        .then(p => getunlocksinfo(p.arr, p.head)));
 };
-const toSoldiers = function(arr,head) {
-	if(!arr)
-	{return undefined;}
+const toSoldiers = function(arr, head) {
+    if (!arr) {
+        return undefined;
+    }
     let plist = new Array();
-    arr.map(p => plist.push(toSoldier(p,head)));
+    arr.map(p => plist.push(toSoldier(p, head)));
     return plist;
 };
 const toSoldier = function(p, head) {
     let s = new Soldier();
     for (let i = 0; i < p.length; i++) {
-	if(head[i]==='rnk')head[i]='rank';
+        if (head[i] === 'rnk') head[i] = 'rank';
         s[head[i]] = p[i];
     }
     return s;
@@ -51,7 +60,7 @@ const modifySoldier = function(s, head, data) {
     }
     return s;
 };
-const getAwards = function(arr,head) {
+const getAwards = function(arr, head) {
     let awards = [];
     arr.map(data => {
         let award = {};
@@ -62,7 +71,7 @@ const getAwards = function(arr,head) {
     });
     return awards;
 };
-const getunlocksinfo = function(arr,head) {
+const getunlocksinfo = function(arr, head) {
     let unlocks = [];
     arr.map(data => {
         let unlock = {};

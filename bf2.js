@@ -2,7 +2,14 @@ const request = require('request-promise');
 const parser = require('./parser');
 const getPlayers = (nick) => request(getOptions('http://bf2web.game.bf2.us/ASP/searchforplayers.aspx?nick=' + nick + '&where=a&sort=a&debug=txs&transpose=0'))
     .catch(console.log)
-    .then(parser.parse).then(p => toSoldiers(p.arr,p.head));
+    .then(parser.parse).then(p => toSoldiers(p.arr,p.head)).then(p => p.sort((a, b) => {
+        if (a.nick === nick)
+		return -1;
+		else if (b.nick === nick)
+		return 1;
+		else
+		return 0;
+    }));
 const getLeaderBoard = (type, id, n) => request(getOptions('http://bf2web.game.bf2.us/ASP/getleaderboard.aspx?type=' + type + '&id=' + id + 'after=' + n))
     .catch(console.log)
     .then(parser.parse).then(p => toSoldiers(p.arr,p.head));
