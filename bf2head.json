@@ -25,7 +25,7 @@
     "klpr": "killsPR",
     "klsc": "killScore",
     "loss": "losses",
-    "osaa": "smallArmsAccuracy",
+    "osaa": "weaponAccuracy",
     "ospm": "scorePM",
     "pkas": "killAssistsAP",
     "rpar": "repairs",
