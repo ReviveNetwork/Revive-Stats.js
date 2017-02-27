@@ -53,8 +53,6 @@ const toSoldier = function (p, head) {
     s.maps = {};
     s.weapons = {};
     for (let i = 0; i < p.length; i++) {
-        if (p[i].startsWith('0.0'))
-            p[i] = parseFloat(p[i]).toFixed(2);
         if (head[i].includes('-') && !head[i].includes('gpm')) {
             if (head[i].startsWith('k')) {
                 let id = head[i].substr(head[i].length - 2, 1);
