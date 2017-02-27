@@ -6,15 +6,15 @@ module.exports.parse = (text, headcount) => {
         headcount = 10;
     }
     let head = undefined;
-	let i=0;
-	let hi=0;
+    let i = 0;
+    let hi = 0;
     for (i = 0; i < arr.length; i++) {
         arr[i] = arr[i].split('\t');
-		//console.log(arr[i]);
+        //console.log(arr[i]);
         if (arr[i][0] === 'H') {
             if (c < headcount) {
                 head = arr[i];
-				hi = i;
+                hi = i;
             } else {
                 arr.splice(i);
                 break;
@@ -22,20 +22,20 @@ module.exports.parse = (text, headcount) => {
             c++;
         }
         if (arr[i][0] == '$') {
-            arr.splice(i,1)
+            arr.splice(i, 1)
         }
     }
     if (head == undefined) {
-        return {};
+        throw new Error("Player not found");
     }
-    arr = arr.slice(hi+1);
-	//console.log(arr);
+    arr = arr.slice(hi + 1);
+    //console.log(arr);
     for (let i = 0; i < arr.length; i++) {
         arr[i].shift();
     }
     head.shift();
     if (arr.includes(head)) {
-        return {};
+        throw new Error("Player not found");
     }
     //console.log(head);
     //console.log(arr);
