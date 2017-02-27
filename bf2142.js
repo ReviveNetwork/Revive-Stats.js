@@ -3,22 +3,21 @@ const parser = require('./parser');
 const auth = require('./authToken.js').getToken;
 const getPlayers = (nick) => request(getOptions('http://s.bf2142.us/playersearch.aspx?nick=' + nick + '&auth=' + auth(0)))
     .catch(console.log)
-    .then(parser.parse).then(p => toSoldiers(p.arr, p.head)).then(p => p.sort(function(a, b)
-	{
-		let aStart = a.nick.match(new RegExp('^'+nick, 'i')) || [],
-         bStart = b.nick.match(new RegExp('^'+nick, 'i')) || [];
+    .then(parser.parse).then(p => toSoldiers(p.arr, p.head)).then(p => p.sort(function (a, b) {
+        let aStart = a.nick.match(new RegExp('^' + nick, 'i')) || [],
+            bStart = b.nick.match(new RegExp('^' + nick, 'i')) || [];
 
-		if ( aStart.length != bStart.length ) return bStart.length - aStart.length;
+        if (aStart.length != bStart.length) return bStart.length - aStart.length;
 
-		else return a.nick > b.nick ? 1 : -1;
-	}));
+        else return a.nick > b.nick ? 1 : -1;
+    }));
 const getLeaderBoard = (type, id, n) => request(getOptions('http://s.bf2142.us/getleaderboard.aspx?type=' + type + '&id=' + id + '&pos=0&after=' + n + '&auth=' + auth(0)))
     .catch(console.log)
     .then(parser.parse).then(p => toSoldiers(p.arr, p.head));
 const getPlayer = (pid) => request(getOptions('http://s.bf2142.us/getplayerinfo.aspx?auth=' + auth(pid) + '&mode=base'))
     .catch(console.log)
-    .then(res => parser.parse(res, 2)).then(p => toSoldier(p.arr[0], p.head));
-const getOptions = function(URL) {
+    .then(res => parser.parse(res, 2)).then(replace).then(p => toSoldier(p.arr[0], p.head));
+const getOptions = function (URL) {
     return {
         url: URL,
         headers: {
@@ -27,7 +26,7 @@ const getOptions = function(URL) {
     };
 };
 exports.getPlayers = getPlayers;
-const Soldier = function() {
+const Soldier = function () {
     this.pid = 0;
     this.getAwards = () => getAuthToken(pid).then(auth => request(getOptions('http://s.bf2142.us/getawardsinfo.aspx?auth=' + auth(pid)))
         .catch(console.log)
@@ -38,7 +37,7 @@ const Soldier = function() {
         .then(parser.parse)
         .then(p => getunlocksinfo(p.arr, p.head)));
 };
-const toSoldiers = function(arr, head) {
+const toSoldiers = function (arr, head) {
     if (!arr) {
         return undefined;
     }
@@ -46,7 +45,7 @@ const toSoldiers = function(arr, head) {
     arr.map(p => plist.push(toSoldier(p, head)));
     return plist;
 };
-const toSoldier = function(p, head) {
+const toSoldier = function (p, head) {
     let s = new Soldier();
     for (let i = 0; i < p.length; i++) {
         if (head[i] === 'rnk') head[i] = 'rank';
@@ -54,13 +53,13 @@ const toSoldier = function(p, head) {
     }
     return s;
 };
-const modifySoldier = function(s, head, data) {
+const modifySoldier = function (s, head, data) {
     for (let i = 0; i < data.length; i++) {
         s[head[i]] = data[i];
     }
     return s;
 };
-const getAwards = function(arr, head) {
+const getAwards = function (arr, head) {
     let awards = [];
     arr.map(data => {
         let award = {};
@@ -71,7 +70,7 @@ const getAwards = function(arr, head) {
     });
     return awards;
 };
-const getunlocksinfo = function(arr, head) {
+const getunlocksinfo = function (arr, head) {
     let unlocks = [];
     arr.map(data => {
         let unlock = {};
@@ -82,6 +81,15 @@ const getunlocksinfo = function(arr, head) {
     });
     return unlocks;
 };
+const replace = (p) => {
+    if (!p) return undefined;
+    const data = require('./bf2142head.json');
+    for (let i = 0; i < p.head.length; i++) {
+        if (data[p.head[i]])
+            p.head = data[p.head[i]];
+    }
+    return p;
+}
 module.exports.getPlayer = getPlayer;
 module.exports.getPlayers = getPlayers;
 module.exports.getLeaderBoard = getLeaderBoard;

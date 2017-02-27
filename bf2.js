@@ -81,6 +81,8 @@ const getunlocksinfo = function (arr, head) {
     return unlocks;
 };
 const replace = (p) => {
+
+    if (!p) return undefined;
     const data = require('./bf2head.json');
     for (let i = 0; i < p.head.length; i++) {
         if (data[p.head[i]])
