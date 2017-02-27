@@ -86,7 +86,7 @@ const replace = (p) => {
     const data = require('./bf2head.json');
     for (let i = 0; i < p.head.length; i++) {
         if (data[p.head[i]])
-            p.head = data[p.head[i]];
+            p.head[i] = data[p.head[i]];
     }
     return p;
 }
