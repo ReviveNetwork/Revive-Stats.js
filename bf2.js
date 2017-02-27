@@ -50,6 +50,9 @@ const toSoldier = function (p, head) {
     for (let i = 0; i < p.length; i++) {
         s[head[i]] = p[i];
     }
+    if (s[head[i]].startsWith('0.0'))
+        s[head[i]] = parseFloat(s[head[i]]).toFixed(2);
+    s.kdr = (parseFloat(s.kills) / parseFloat(s.deaths) * 100).toFixed(2);
     return s;
 };
 const modifySoldier = function (s, head, data) {

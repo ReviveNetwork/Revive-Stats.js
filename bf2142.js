@@ -50,6 +50,8 @@ const toSoldier = function (p, head) {
     for (let i = 0; i < p.length; i++) {
         if (head[i] === 'rnk') head[i] = 'rank';
         s[head[i]] = p[i];
+        if (s[head[i]].startsWith('0.0'))
+            s[head[i]] = parseFloat(s[head[i]]).toFixed(2);
     }
     return s;
 };
