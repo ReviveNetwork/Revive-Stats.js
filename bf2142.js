@@ -47,9 +47,47 @@ const toSoldiers = function (arr, head) {
 };
 const toSoldier = function (p, head) {
     let s = new Soldier();
+    s.kits = {};
+    s.armies = {};
+    s.vehicles = {};
+    s.maps = {};
+    s.weapons = {};
     for (let i = 0; i < p.length; i++) {
-        if (head[i] === 'rnk') head[i] = 'rank';
-        s[head[i]] = p[i];
+        if (head[i].includes('-') && !head[i].includes('gpm')) {
+            if (head[i].startsWith('k')) {
+                let id = head[i].substr(head[i].length - 2, 1);
+                if (!s.kits[id])
+                    s.kits[id] = {};
+                s.kits[id][head[i].substring(0, length - 2)] = p[i];
+            }
+            if (head[i].startsWith('v')) {
+                let id = head[i].substr(head[i].length - 2, 1);
+                if (!s.vehicles[id])
+                    s.vehicles[id] = {};
+                s.vehicles[id][head[i].substring(0, length - 2)] = p[i];
+            }
+            if (head[i].startsWith('a')) {
+                let id = head[i].substr(head[i].length - 2, 1);
+                if (!s.armies[id])
+                    s.armies[id] = {};
+                s.armies[id][head[i].substring(0, length - 2)] = p[i];
+            }
+            if (head[i].startsWith('m')) {
+                let id = head[i].substr(head[i].length - 2, 1);
+                if (!s.maps[id])
+                    s.maps[id] = {};
+                s.maps[id][head[i].substring(0, length - 2)] = p[i];
+            }
+            if (head[i].startsWith('w')) {
+                let id = head[i].substr(head[i].length - 2, 1);
+                if (!s.weapons[id])
+                    s.weapons[id] = {};
+                s.weapons[id][head[i].substring(0, length - 2)] = p[i];
+            }
+        }
+        else {
+            s[head[i]] = p[i];
+        }
         if (s[head[i]].startsWith('0.0'))
             s[head[i]] = parseFloat(s[head[i]]).toFixed(2);
     }
