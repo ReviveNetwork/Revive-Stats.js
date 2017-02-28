@@ -57,49 +57,42 @@ const toSoldier = function (s, p, head) {
                 if (id === '-') id = 0;
                 if (!s.kits[id])
                     s.kits[id] = {};
-                s.kits[id][head[i].substring(1, head[i].length - 3)] = p[i];
+                s.kits[id][replace(head[i].substring(1, head[i].length - 2))] = p[i];
             }
             if (head[i].startsWith('v')) {
                 let id = head[i].substr(head[i].length - 1, 1);
                 if (id === '-') id = 0;
                 if (!s.vehicles[id])
                     s.vehicles[id] = {};
-                s.vehicles[id][head[i].substring(1, head[i].length - 3)] = p[i];
+                s.vehicles[id][replace(head[i].substring(1, head[i].length - 2))] = p[i];
             }
             if (head[i].startsWith('a')) {
                 let id = head[i].substr(head[i].length - 1, 1);
                 if (id === '-') id = 0;
                 if (!s.armies[id])
                     s.armies[id] = {};
-                s.armies[id][head[i].substring(1, head[i].length - 3)] = p[i];
+                s.armies[id][replace(head[i].substring(1, head[i].length - 2))] = p[i];
             }
             if (head[i].startsWith('m')) {
                 let id = head[i].substr(head[i].length - 1, 1);
                 if (id === '-') id = 0;
                 if (!s.maps[id])
                     s.maps[id] = {};
-                s.maps[id][head[i].substring(1, head[i].length - 3)] = p[i];
+                s.maps[id][replace(head[i].substring(1, head[i].length - 2))] = p[i];
             }
             if (head[i].startsWith('w')) {
                 let id = head[i].substr(head[i].length - 1, 1);
                 if (id === '-') id = 0;
                 if (!s.weapons[id])
                     s.weapons[id] = {};
-                s.weapons[id][head[i].substring(1, head[i].length - 3)] = p[i];
-            }
-            if (head[i].startsWith('w')) {
-                let id = head[i].substr(head[i].length - 1, 1);
-                if (id === '-') id = 0;
-                if (!s.weapons[id])
-                    s.weapons[id] = {};
-                s.weapons[id][head[i].substring(1, head[i].length - 3)] = p[i];
+                s.weapons[id][replace(head[i].substring(1, head[i].length - 2))] = p[i];
             }
             if (head[i].startsWith('e')) {
                 let id = head[i].substr(head[i].length - 1, 1);
                 if (id === '-') id = 0;
                 if (!s.equipments[id])
                     s.equipments[id] = {};
-                s.equipments[id][head[i].substring(1, head[i].length - 3)] = p[i];
+                s.equipments[id][replace(head[i].substring(1, head[i].length - 2))] = p[i];
             }
         }
         else {
@@ -134,6 +127,11 @@ const getunlocksinfo = function (p) {
 const replace = (p) => {
     if (!p) return undefined;
     const data = require('./bf2142head.json');
+    if (typeof p == "string") {
+        if (data[p])
+            p = data[p];
+        return p;
+    }
     for (let i = 0; i < p.head.length; i++) {
         if (data[p.head[i]])
             p.head[i] = data[p.head[i]];
