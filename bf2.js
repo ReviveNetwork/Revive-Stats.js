@@ -24,14 +24,6 @@ const getPlayer = (pid) => request(getOptions('http://bf2web.game.bf2.us/ASP/get
         return request(getOptions('http://bf2web.game.bf2.us/ASP/getawardsinfo.aspx?pid=' + s.pid)).then(parser.parse).then(getAwards).then(a => { s.awards = a; return s; })
     }).then(s => {
         return request(getOptions('http://bf2web.game.bf2.us/ASP/getunlocksinfo.aspx?pid=' + s.pid)).then(parser.parse).then(getunlocksinfo).then(a => { s.unlocks = a; return s; })
-    }).then(s => {
-        return request(getOptions('http://bf2web.game.bf2.us/ASP/getplayerinfo.aspx?pid=' + s.pid + '&mode=veh')).then(parser.parse).then(data => toSoldier(s, data.arr, data.head));
-    })
-    .then(s => {
-        return request(getOptions('http://bf2web.game.bf2.us/ASP/getplayerinfo.aspx?pid=' + s.pid + '&info=mtm-,mwn-,mls-')).then(parser.parse).then(data => toSoldier(s, data.arr, data.head));
-    })
-    .then(s => {
-        return request(getOptions('http://bf2web.game.bf2.us/ASP/getplayerinfo.aspx?pid=' + s.pid + '&mode=wep')).then(parser.parse).then(data => toSoldier(s, data.arr, data.head));
     })
 const getOptions = function (URL) {
     return {
