@@ -18,7 +18,7 @@ const getLeaderBoard = (type, id, n) => request(getOptions('http://s.bf2142.us/g
 const getPlayer = (pid) => request(getOptions('http://s.bf2142.us/getplayerinfo.aspx?auth=' + auth(pid) + '&mode=base'))
     .catch(console.log)
     .then(res => parser.parse(res, 2)).then(replace).then(parser.parse).then(replace).then(p => {
-        let s = new Soldier();
+        let s = new Soldier(); s.equipments = {};
         toSoldier(s, p.arr[0], p.head)
     }).then(s => {
         return request(getOptions('http://s.bf2142.us/getawardsinfo.aspx?auth=' + auth(s.pid))).then(parser.parse).then(getAwards).then(a => { s.awards = a; return s; })
@@ -86,6 +86,20 @@ const toSoldier = function (s, p, head) {
                 if (!s.weapons[id])
                     s.weapons[id] = {};
                 s.weapons[id][head[i].substring(0, head[i].length - 3)] = p[i];
+            }
+            if (head[i].startsWith('w')) {
+                let id = head[i].substr(head[i].length - 1, 1);
+                if (id === '-') id = 0;
+                if (!s.weapons[id])
+                    s.weapons[id] = {};
+                s.weapons[id][head[i].substring(0, head[i].length - 3)] = p[i];
+            }
+            if (head[i].startsWith('e')) {
+                let id = head[i].substr(head[i].length - 1, 1);
+                if (id === '-') id = 0;
+                if (!s.equipments[id])
+                    s.equipments[id] = {};
+                s.equipments[id][head[i].substring(0, head[i].length - 3)] = p[i];
             }
         }
         else {
