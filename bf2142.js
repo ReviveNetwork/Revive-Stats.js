@@ -17,7 +17,7 @@ const getLeaderBoard = (type, id, n) => request(getOptions('http://s.bf2142.us/g
     .then(parser.parse).then(p => toSoldiers(p.arr, p.head));
 const getPlayer = (pid) => request(getOptions('http://s.bf2142.us/getplayerinfo.aspx?auth=' + auth(pid) + '&mode=base'))
     .catch(console.log)
-    .then(res => parser.parse(res, 2)).then(replace).then(parser.parse).then(replace).then(p => {
+    .then(res => parser.parse(res, 2)).then(replace).then(p => {
         let s = new Soldier(); s.equipments = {};
         return toSoldier(s, p.arr[0], p.head)
     }).then(s => {
