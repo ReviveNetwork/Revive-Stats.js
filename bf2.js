@@ -18,8 +18,7 @@ const getPlayer = (pid) => request(getOptions('http://bf2web.game.bf2.us/ASP/get
     .catch(console.log)
     .then(parser.parse).then(replace).then(p => {
         let s = new Soldier();
-
-        toSoldier(s, p.arr[0], p.head)
+        return toSoldier(s, p.arr[0], p.head)
     }).then(s => {
         return request(getOptions('http://bf2web.game.bf2.us/ASP/getawardsinfo.aspx?pid=' + s.pid)).then(parser.parse).then(getAwards).then(a => { s.awards = a; return s; })
     }).then(s => {
@@ -94,23 +93,23 @@ const toSoldier = function (s, p, head) {
     s.kdr = (parseFloat(s.kills) / parseFloat(s.deaths)).toFixed(2);
     return s;
 };
-const getAwards = function (arr, head) {
+const getAwards = function (p) {
     let awards = [];
-    arr.map(data => {
+    p.arr.map(data => {
         let award = {};
         for (let i = 0; i < data.length; i++) {
-            award[head[i]] = data[i];
+            award[p.head[i]] = data[i];
         }
         awards.push(award);
     });
     return awards;
 };
-const getunlocksinfo = function (arr, head) {
+const getunlocksinfo = function (p) {
     let unlocks = [];
-    arr.map(data => {
+    p.arr.map(data => {
         let unlock = {};
         for (let i = 0; i < data.length; i++) {
-            unlock[head[i]] = data[i];
+            unlock[p.head[i]] = data[i];
         }
         unlocks.push(unlock);
     });

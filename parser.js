@@ -1,5 +1,7 @@
 module.exports.parse = (text, headcount) => {
-    let arr = text.trim().split('\n');
+    console.log(typeof text)
+    if (!text) throw new Error("Empty response from API")
+    let arr = text.toString().trim().split('\n');
     //console.log(arr);
     let c = 0;
     if (!headcount) {
