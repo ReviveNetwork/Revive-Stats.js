@@ -52,47 +52,37 @@ const toSoldier = function (s, p, head) {
         if (p[i].startsWith('0.0'))
             p[i] = (parseFloat(p[i]) * 100).toFixed(2);
         if (head[i].includes('-') && !head[i].includes('gpm')) {
+            let id = head[i].split('-')[1];
+            head[i]=head[i].split('-')[0];
             if (head[i].startsWith('k')) {
-                let id = head[i].substr(head[i].length - 1, 1);
-                if (id === '-') id = 0;
                 if (!s.kits[id])
                     s.kits[id] = {};
-                s.kits[id][replace(head[i].substring(1, head[i].length - 2))] = p[i];
+                s.kits[id][replace(head[i].substring(1)] = p[i];
             }
             if (head[i].startsWith('v')) {
-                let id = head[i].substr(head[i].length - 1, 1);
-                if (id === '-') id = 0;
                 if (!s.vehicles[id])
                     s.vehicles[id] = {};
-                s.vehicles[id][replace(head[i].substring(1, head[i].length - 2))] = p[i];
+                s.vehicles[id][replace(head[i].substring(1)] = p[i];
             }
             if (head[i].startsWith('a')) {
-                let id = head[i].substr(head[i].length - 1, 1);
-                if (id === '-') id = 0;
                 if (!s.armies[id])
                     s.armies[id] = {};
-                s.armies[id][replace(head[i].substring(1, head[i].length - 2))] = p[i];
+                s.armies[id][replace(head[i].substring(1)] = p[i];
             }
             if (head[i].startsWith('m')) {
-                let id = head[i].substr(head[i].length - 1, 1);
-                if (id === '-') id = 0;
                 if (!s.maps[id])
                     s.maps[id] = {};
-                s.maps[id][replace(head[i].substring(1, head[i].length - 2))] = p[i];
+                s.maps[id][replace(head[i].substring(1)] = p[i];
             }
             if (head[i].startsWith('w')) {
-                let id = head[i].substr(head[i].length - 1, 1);
-                if (id === '-') id = 0;
                 if (!s.weapons[id])
                     s.weapons[id] = {};
-                s.weapons[id][replace(head[i].substring(1, head[i].length - 2))] = p[i];
+                s.weapons[id][replace(head[i].substring(1)] = p[i];
             }
             if (head[i].startsWith('e')) {
-                let id = head[i].substr(head[i].length - 1, 1);
-                if (id === '-') id = 0;
                 if (!s.equipments[id])
                     s.equipments[id] = {};
-                s.equipments[id][replace(head[i].substring(1, head[i].length - 2))] = p[i];
+                s.equipments[id][replace(head[i].substring(1)] = p[i];
             }
         }
         else {
