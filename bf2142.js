@@ -57,32 +57,32 @@ const toSoldier = function (s, p, head) {
             if (head[i].startsWith('k')) {
                 if (!s.kits[id])
                     s.kits[id] = {};
-                s.kits[id][replace(head[i].substring(1)] = p[i];
+                s.kits[id][replace(head[i].substring(1))] = p[i];
             }
             if (head[i].startsWith('v')) {
                 if (!s.vehicles[id])
                     s.vehicles[id] = {};
-                s.vehicles[id][replace(head[i].substring(1)] = p[i];
+                s.vehicles[id][replace(head[i].substring(1))] = p[i];
             }
             if (head[i].startsWith('a')) {
                 if (!s.armies[id])
                     s.armies[id] = {};
-                s.armies[id][replace(head[i].substring(1)] = p[i];
+                s.armies[id][replace(head[i].substring(1))] = p[i];
             }
             if (head[i].startsWith('m')) {
                 if (!s.maps[id])
                     s.maps[id] = {};
-                s.maps[id][replace(head[i].substring(1)] = p[i];
+                s.maps[id][replace(head[i].substring(1))] = p[i];
             }
             if (head[i].startsWith('w')) {
                 if (!s.weapons[id])
                     s.weapons[id] = {};
-                s.weapons[id][replace(head[i].substring(1)] = p[i];
+                s.weapons[id][replace(head[i].substring(1))] = p[i];
             }
             if (head[i].startsWith('e')) {
                 if (!s.equipments[id])
                     s.equipments[id] = {};
-                s.equipments[id][replace(head[i].substring(1)] = p[i];
+                s.equipments[id][replace(head[i].substring(1))] = p[i];
             }
         }
         else {
