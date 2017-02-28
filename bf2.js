@@ -1,4 +1,5 @@
 const request = require('request-promise');
+const Soldier = require('./classes/soldier');
 const parser = require('./parser');
 const getPlayers = (nick) => request(getOptions('http://bf2web.game.bf2.us/ASP/searchforplayers.aspx?nick=' + nick + '&where=a&sort=a&debug=txs&transpose=0'))
     .catch(console.log)
@@ -15,7 +16,23 @@ const getLeaderBoard = (type, id, n) => request(getOptions('http://bf2web.game.b
     .then(parser.parse).then(p => toSoldiers(p.arr, p.head));
 const getPlayer = (pid) => request(getOptions('http://bf2web.game.bf2.us/ASP/getplayerinfo.aspx?pid=' + pid + '&info=per*,cmb*,twsc,cpcp,cacp,dfcp,kila,heal,rviv,rsup,rpar,tgte,dkas,dsab,cdsc,rank,cmsc,kick,kill,deth,suic,ospm,klpm,klpr,dtpr,bksk,wdsk,bbrs,tcdr,ban,dtpm,lbtl,osaa,vrk,tsql,tsqm,tlwf,mvks,vmks,mvn*,vmr*,fkit,fmap,fveh,fwea,wtm-,wkl-,wdt-,wac-,wkd-,vtm-,vkl-,vdt-,vkd-,vkr-,atm-,awn-,alo-,abr-,ktm-,kkl-,kdt-,kkd-'))
     .catch(console.log)
-    .then(parser.parse).then(replace).then(p => toSoldier(p.arr[0], p.head));
+    .then(parser.parse).then(replace).then(p => {
+        let s = new Soldier();
+
+        toSoldier(s, p.arr[0], p.head)
+    }).then(s => {
+        return request(getOptions('http://bf2web.game.bf2.us/ASP/getawardsinfo.aspx?pid=' + s.pid)).then(parser.parse).then(getAwards).then(a => { s.awards = a; return s; })
+    }).then(s => {
+        return request(getOptions('http://bf2web.game.bf2.us/ASP/getunlocksinfo.aspx?pid=' + s.pid)).then(parser.parse).then(getunlocksinfo).then(a => { s.unlocks = a; return s; })
+    }).then(s => {
+        return request(getOptions('http://bf2web.game.bf2.us/ASP/getplayerinfo.aspx?pid=' + s.pid + '&mode=veh')).then(parser.parse).then(data => toSoldier(s, data.arr, data.head));
+    })
+    .then(s => {
+        return request(getOptions('http://bf2web.game.bf2.us/ASP/getplayerinfo.aspx?pid=' + s.pid + '&info=mtm-,mwn-,mls-')).then(parser.parse).then(data => toSoldier(s, data.arr, data.head));
+    })
+    .then(s => {
+        return request(getOptions('http://bf2web.game.bf2.us/ASP/getplayerinfo.aspx?pid=' + s.pid + '&mode=wep')).then(parser.parse).then(data => toSoldier(s, data.arr, data.head));
+    })
 const getOptions = function (URL) {
     return {
         url: URL,
@@ -25,33 +42,20 @@ const getOptions = function (URL) {
     };
 };
 exports.getPlayers = getPlayers;
-const Soldier = function () {
-    this.pid = 0;
-    this.getAwards = () => request(getOptions('http://bf2web.game.bf2.us/ASP/getawardsinfo.aspx?pid=' + pid))
-        .catch(console.log)
-        .then(parser.parse)
-        .then(p => getAwards(p.arr, p.head));
-    this.getUnlocks = () => request(getOptions('http://bf2web.game.bf2.us/ASP/getunlocksinfo.aspx?pid=' + pid))
-        .catch(console.log)
-        .then(parser.parse)
-        .then(p => getunlocksinfo(p.arr, p.head));
-};
 const toSoldiers = function (arr, head) {
     if (!arr)
     { return undefined; }
     let plist = new Array();
-    arr.map(p => plist.push(toSoldier(p, head)));
+    arr.map(p => {
+        let s = new Soldier();
+
+        plist.push(toSoldier(s, p, head))
+    });
     return plist;
 };
-const toSoldier = function (p, head) {
+const toSoldier = function (s, p, head) {
     if (!p)
     { return p; }
-    let s = new Soldier();
-    s.kits = {};
-    s.armies = {};
-    s.vehicles = {};
-    s.maps = {};
-    s.weapons = {};
     for (let i = 0; i < p.length; i++) {
         if (head[i].includes('-') && !head[i].includes('gpm')) {
             if (head[i].startsWith('k')) {
@@ -96,12 +100,6 @@ const toSoldier = function (p, head) {
 
     }
     s.kdr = (parseFloat(s.kills) / parseFloat(s.deaths)).toFixed(2);
-    return s;
-};
-const modifySoldier = function (s, head, data) {
-    for (let i = 0; i < data.length; i++) {
-        s[head[i]] = data[i];
-    }
     return s;
 };
 const getAwards = function (arr, head) {
