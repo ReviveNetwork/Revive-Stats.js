@@ -61,35 +61,35 @@ const toSoldier = function (s, p, head) {
             p[i] = (parseFloat(p[i]) * 100).toFixed(2);
         if (head[i].includes('-') && !head[i].includes('gpm')) {
             if (head[i].startsWith('k')) {
-                let id = head[i].substr(head[i].length - 2, 1);
+                let id = head[i].substr(head[i].length - 1, 1);
                 if (id === '-') id = 0;
                 if (!s.kits[id])
                     s.kits[id] = {};
                 s.kits[id][head[i].substring(0, head[i].length - 3)] = p[i];
             }
             if (head[i].startsWith('v')) {
-                let id = head[i].substr(head[i].length - 2, 1);
+                let id = head[i].substr(head[i].length - 1, 1);
                 if (id === '-') id = 0;
                 if (!s.vehicles[id])
                     s.vehicles[id] = {};
                 s.vehicles[id][head[i].substring(0, head[i].length - 3)] = p[i];
             }
             if (head[i].startsWith('a')) {
-                let id = head[i].substr(head[i].length - 2, 1);
+                let id = head[i].substr(head[i].length - 1, 1);
                 if (id === '-') id = 0;
                 if (!s.armies[id])
                     s.armies[id] = {};
                 s.armies[id][head[i].substring(0, head[i].length - 3)] = p[i];
             }
             if (head[i].startsWith('m')) {
-                let id = head[i].substr(head[i].length - 2, 1);
+                let id = head[i].substr(head[i].length - 1, 1);
                 if (id === '-') id = 0;
                 if (!s.maps[id])
                     s.maps[id] = {};
                 s.maps[id][head[i].substring(0, head[i].length - 3)] = p[i];
             }
             if (head[i].startsWith('w')) {
-                let id = head[i].substr(head[i].length - 2, 1);
+                let id = head[i].substr(head[i].length - 1, 1);
                 if (id === '-') id = 0;
                 if (!s.weapons[id])
                     s.weapons[id] = {};
