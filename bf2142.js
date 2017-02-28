@@ -24,14 +24,6 @@ const getPlayer = (pid) => request(getOptions('http://s.bf2142.us/getplayerinfo.
         return request(getOptions('http://s.bf2142.us/getawardsinfo.aspx?auth=' + auth(s.pid))).then(parser.parse).then(getAwards).then(a => { s.awards = a; return s; })
     }).then(s => {
         return request(getOptions('http://s.bf2142.us/getunlocksinfo.aspx?auth=' + auth(s.pid))).then(parser.parse).then(getunlocksinfo).then(a => { s.unlocks = a; return s; })
-    }).then(s => {
-        return request(getOptions('http://s.bf2142.us/getplayerinfo.aspx?auth=' + auth(s.pid) + '&mode=veh')).then(parser.parse).then(data => toSoldier(s, data.arr, data.head));
-    })
-    .then(s => {
-        return request(getOptions('http://s.bf2142.us/getplayerinfo.aspx?auth=' + auth(s.pid) + '&mode=map')).then(parser.parse).then(data => toSoldier(s, data.arr, data.head));
-    })
-    .then(s => {
-        return request(getOptions('http://s.bf2142.us/getplayerinfo.aspx?auth=' + auth(s.pid) + '&mode=wep')).then(parser.parse).then(data => toSoldier(s, data.arr, data.head));
     })
 const getOptions = function (URL) {
     return {
