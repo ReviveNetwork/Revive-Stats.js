@@ -1,6 +1,9 @@
-module.exports.bf2 = require('./bf2');
-module.exports.bf2142 = require('./bf2142');
-module.exports.auth = require('./authToken');
+var stats = {
+    bf2: require('./bf2'),
+    bf2142: require('./bf2142'),
+    auth: require('./authToken')
+}
+module.exports = stats;
 //var fs = require('fs');
 //module.exports.bf2142.getPlayer("1908093").then(p => fs.writeFile("out.json", JSON.stringify(p), console.log));
 //console.log(require('./authToken.js').parseToken('bSCZgQN08cGhavVXAhY7CA__'));
