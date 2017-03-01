@@ -21,9 +21,9 @@ const getPlayer = (pid) => request(getOptions('http://s.bf2142.us/getplayerinfo.
         let s = new Soldier(); s.equipments = {};
         return toSoldier(s, p.arr[0], p.head)
     }).then(s => {
-        return request(getOptions('http://s.bf2142.us/getawardsinfo.aspx?auth=' + auth(s.pid))).then(parser.parse).then(getAwards).then(a => { s.awards = a; return s; }).catch(console.log)
+        return request(getOptions('http://s.bf2142.us/getawardsinfo.aspx?auth=' + auth(s.pid))).then(parser.parse).then(replace).then(getAwards).then(a => { s.awards = a; return s; }).catch(console.log)
     }).then(s => {
-        return request(getOptions('http://s.bf2142.us/getunlocksinfo.aspx?auth=' + auth(s.pid))).then(parser.parse).then(getunlocksinfo).then(a => { s.unlocks = a; return s; }).catch(console.log)
+        return request(getOptions('http://s.bf2142.us/getunlocksinfo.aspx?auth=' + auth(s.pid))).then(parser.parse).then(replace).then(getunlocksinfo).then(a => { s.unlocks = a; return s; }).catch(console.log)
     })
 const getOptions = function (URL) {
     return {
@@ -53,7 +53,7 @@ const toSoldier = function (s, p, head) {
             p[i] = (parseFloat(p[i]) * 100).toFixed(2);
         if (head[i].includes('-') && !head[i].includes('gpm')) {
             let id = head[i].split('-')[1];
-            head[i]=head[i].split('-')[0];
+            head[i] = head[i].split('-')[0];
             if (head[i].startsWith('k')) {
                 if (!s.kits[id])
                     s.kits[id] = {};

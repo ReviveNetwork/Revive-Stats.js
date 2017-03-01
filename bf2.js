@@ -20,9 +20,9 @@ const getPlayer = (pid) => request(getOptions('http://bf2web.game.bf2.us/ASP/get
         let s = new Soldier();
         return toSoldier(s, p.arr[0], p.head)
     }).then(s => {
-        return request(getOptions('http://bf2web.game.bf2.us/ASP/getawardsinfo.aspx?pid=' + s.pid)).then(parser.parse).then(getAwards).then(a => { s.awards = a; return s; })
+        return request(getOptions('http://bf2web.game.bf2.us/ASP/getawardsinfo.aspx?pid=' + s.pid)).then(parser.parse).then(replace).then(getAwards).then(a => { s.awards = a; return s; })
     }).then(s => {
-        return request(getOptions('http://bf2web.game.bf2.us/ASP/getunlocksinfo.aspx?pid=' + s.pid)).then(parser.parse).then(getunlocksinfo).then(a => { s.unlocks = a; return s; })
+        return request(getOptions('http://bf2web.game.bf2.us/ASP/getunlocksinfo.aspx?pid=' + s.pid)).then(parser.parse).then(replace).then(getunlocksinfo).then(a => { s.unlocks = a; return s; })
     })
 const getOptions = function (URL) {
     return {
@@ -50,7 +50,7 @@ const toSoldier = function (s, p, head) {
     for (let i = 0; i < p.length; i++) {
         if (head[i].includes('-') && !head[i].includes('gpm')) {
             let id = head[i].split('-')[1];
-            head[i]=head[i].split('-')[0];
+            head[i] = head[i].split('-')[0];
             if (head[i].startsWith('k')) {
                 if (!s.kits[id])
                     s.kits[id] = {};
@@ -105,7 +105,12 @@ const getunlocksinfo = function (p) {
         }
         unlocks.push(unlock);
     });
-    return unlocks;
+    return unlocks.filter(data => {
+        if (data.state == 's') {
+            delete data.state;
+            return data
+        };
+    });
 };
 const replace = (p) => {
 
