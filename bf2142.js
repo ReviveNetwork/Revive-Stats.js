@@ -11,10 +11,28 @@ const getPlayers = (nick) => request(getOptions('http://s.bf2142.us/playersearch
         if (aStart.length != bStart.length) return bStart.length - aStart.length;
 
         else return a.nick > b.nick ? 1 : -1;
+    })).then((p) => p.map(res => {
+        delete res.kdr;
+        delete res.armies;
+        delete res.kits;
+        delete res.armies;
+        delete res.vehicles;
+        delete res.maps;
+        delete res.weapons;
+        return res;
     }));
 const getLeaderBoard = (type, id, n) => request(getOptions('http://s.bf2142.us/getleaderboard.aspx?type=' + type + '&id=' + id + '&pos=0&after=' + n + '&auth=' + auth(0)))
     .catch(console.log)
-    .then(parser.parse).then(p => toSoldiers(p.arr, p.head));
+    .then(parser.parse).then(p => toSoldiers(p.arr, p.head)).then((p) => p.map(res => {
+        delete res.kdr;
+        delete res.armies;
+        delete res.kits;
+        delete res.armies;
+        delete res.vehicles;
+        delete res.maps;
+        delete res.weapons;
+        return res;
+    }));
 const getPlayer = (pid) => request(getOptions('http://s.bf2142.us/getplayerinfo.aspx?auth=' + auth(pid) + '&mode=base'))
     .catch(console.log)
     .then(res => parser.parse(res, 2)).then(replace).then(p => {
