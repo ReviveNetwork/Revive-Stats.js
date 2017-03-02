@@ -21,9 +21,10 @@ const getPlayers = (nick) => request(getOptions('http://s.bf2142.us/playersearch
         delete res.weapons;
         return res;
     }));
-const getLeaderBoard = (type, id, n) => request(getOptions('http://s.bf2142.us/getleaderboard.aspx?type=' + (type || "overallscore ") + ((id) ? '&id=' : "") + '&pos=1&before=0&after=' + (n || 19) + '&auth=' + auth(0)))
+const getLeaderBoard = (type, id, n) => request(getOptions('http://s.bf2142.us/getleaderboard.aspx?type=' + (type || "overallscore") + ((id) ? '&id=' : "") + '&pos=1&before=0&after=' + (n || 19) + '&auth=' + auth(1908093)))
     .catch(console.log)
-    .then(parser.parse).then(p => toSoldiers(p.arr, p.head)).then((p) => p.map(res => {
+    .then(parser.parse)
+    .then(p => toSoldiers(p.arr, p.head)).then((p) => p.map(res => {
         delete res.kdr;
         delete res.armies;
         delete res.kits;
@@ -32,7 +33,7 @@ const getLeaderBoard = (type, id, n) => request(getOptions('http://s.bf2142.us/g
         delete res.maps;
         delete res.weapons;
         return res;
-    }));
+    })).then(arr => { arr.shift(); return arr; });
 const getPlayer = (pid) => request(getOptions('http://s.bf2142.us/getplayerinfo.aspx?auth=' + auth(pid) + '&mode=base'))
     .catch(console.log)
     .then(res => parser.parse(res, 2)).then(replace).then(p => {

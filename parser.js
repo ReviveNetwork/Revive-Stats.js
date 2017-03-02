@@ -12,6 +12,10 @@ module.exports.parse = (text, headcount) => {
     let hi = 0;
     for (i = 0; i < arr.length; i++) {
         arr[i] = arr[i].split('\t');
+        arr[i] = arr[i].filter(val => {
+            if (val !== '')
+                return val;
+        })
         //console.log(arr[i]);
         if (arr[i][0] === 'H') {
             if (c < headcount) {
