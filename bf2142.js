@@ -23,7 +23,7 @@ const getPlayers = (nick) => request(getOptions('http://s.bf2142.us/playersearch
     }));
 const getLeaderBoard = (type, id, n) => request(getOptions('http://s.bf2142.us/getleaderboard.aspx?type=' + (type || "overallscore") + ((id) ? '&id=' : "") + '&pos=1&before=0&after=' + (n || 19) + '&auth=' + auth(1908093)))
     .catch(console.log)
-    .then(parser.parse)
+    .then(parser.parse).then(replace)
     .then(p => toSoldiers(p.arr, p.head)).then((p) => p.map(res => {
         delete res.kdr;
         delete res.armies;

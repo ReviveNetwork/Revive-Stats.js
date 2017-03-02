@@ -22,7 +22,7 @@ const getPlayers = (nick) => request(getOptions('http://bf2web.game.bf2.us/ASP/s
     }));
 const getLeaderBoard = (type, id, n) => request(getOptions('http://bf2web.game.bf2.us/ASP/getleaderboard.aspx?type=' + (type || "score") + '&id=' + (id || "overall") + '&pos=1&before=0' + 'after=' + (n || 19)))
     .catch(console.log)
-    .then(parser.parse).then(p => toSoldiers(p.arr, p.head)).then((p) => p.map(res => {
+    .then(parser.parse).then(replace).then(p => toSoldiers(p.arr, p.head)).then((p) => p.map(res => {
         delete res.kdr;
         delete res.armies;
         delete res.kits;
