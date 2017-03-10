@@ -2,7 +2,6 @@ const request = require('request-promise');
 const Soldier = require('./classes/soldier');
 const parser = require('./parser');
 const getPlayers = (nick) => request(getOptions('http://bf2web.game.bf2.us/ASP/searchforplayers.aspx?nick=' + nick + '&where=a&sort=a&debug=txs&transpose=0'))
-    .catch(console.log)
     .then(parser.parse).then(p => toSoldiers(p.arr, p.head)).then(p => p.sort(function (a, b) {
         let aStart = a.nick.match(new RegExp('^' + nick, 'i')) || [],
             bStart = b.nick.match(new RegExp('^' + nick, 'i')) || [];
@@ -21,7 +20,6 @@ const getPlayers = (nick) => request(getOptions('http://bf2web.game.bf2.us/ASP/s
         return res;
     }));
 const getLeaderBoard = (type, id, n) => request(getOptions('http://bf2web.game.bf2.us/ASP/getleaderboard.aspx?type=' + (type || "score") + '&id=' + (id || "overall") + '&pos=1&before=0' + 'after=' + (n || 19)))
-    .catch(console.log)
     .then(parser.parse).then(replace).then(p => toSoldiers(p.arr, p.head)).then((p) => p.map(res => {
         delete res.kdr;
         delete res.armies;
@@ -33,7 +31,6 @@ const getLeaderBoard = (type, id, n) => request(getOptions('http://bf2web.game.b
         return res;
     }));
 const getPlayer = (pid) => request(getOptions('http://bf2web.game.bf2.us/ASP/getplayerinfo.aspx?pid=' + pid + '&info=per*,cmb*,twsc,cpcp,cacp,dfcp,kila,heal,rviv,rsup,rpar,tgte,dkas,dsab,cdsc,rank,cmsc,kick,kill,deth,suic,ospm,klpm,klpr,dtpr,bksk,wdsk,bbrs,tcdr,ban,dtpm,lbtl,osaa,vrk,tsql,tsqm,tlwf,mvks,vmks,mvn*,vmr*,fkit,fmap,fveh,fwea,wtm-,wkl-,wdt-,wac-,wkd-,vtm-,vkl-,vdt-,vkd-,vkr-,atm-,awn-,alo-,abr-,ktm-,kkl-,kdt-,kkd-'))
-    .catch(console.log)
     .then(parser.parse).then(replace).then(p => {
         let s = new Soldier();
         return toSoldier(s, p.arr[0], p.head)

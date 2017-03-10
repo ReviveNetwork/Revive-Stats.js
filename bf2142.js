@@ -3,7 +3,6 @@ const parser = require('./parser');
 const Soldier = require('./classes/soldier');
 const auth = require('./authToken.js').getToken;
 const getPlayers = (nick) => request(getOptions('http://s.bf2142.us/playersearch.aspx?nick=' + nick + '&auth=' + auth(0)))
-    .catch(console.log)
     .then(parser.parse).then(p => toSoldiers(p.arr, p.head)).then(p => p.sort(function (a, b) {
         let aStart = a.nick.match(new RegExp('^' + nick, 'i')) || [],
             bStart = b.nick.match(new RegExp('^' + nick, 'i')) || [];
@@ -22,7 +21,6 @@ const getPlayers = (nick) => request(getOptions('http://s.bf2142.us/playersearch
         return res;
     }));
 const getLeaderBoard = (type, id, n) => request(getOptions('http://s.bf2142.us/getleaderboard.aspx?type=' + (type || "overallscore") + ((id) ? '&id=' : "") + '&pos=1&before=0&after=' + (n || 19) + '&auth=' + auth(1908093)))
-    .catch(console.log)
     .then(parser.parse).then(replace)
     .then(p => toSoldiers(p.arr, p.head)).then((p) => p.map(res => {
         delete res.kdr;
@@ -35,14 +33,13 @@ const getLeaderBoard = (type, id, n) => request(getOptions('http://s.bf2142.us/g
         return res;
     })).then(arr => { arr.shift(); return arr; });
 const getPlayer = (pid) => request(getOptions('http://s.bf2142.us/getplayerinfo.aspx?auth=' + auth(pid) + '&mode=base'))
-    .catch(console.log)
     .then(res => parser.parse(res, 2)).then(replace).then(p => {
         let s = new Soldier(); s.equipments = {};
         return toSoldier(s, p.arr[0], p.head)
     }).then(s => {
-        return request(getOptions('http://s.bf2142.us/getawardsinfo.aspx?auth=' + auth(s.pid))).then(parser.parse).then(replace).then(getAwards).then(a => { s.awards = a; return s; }).catch(console.log)
+        return request(getOptions('http://s.bf2142.us/getawardsinfo.aspx?auth=' + auth(s.pid))).then(parser.parse).then(replace).then(getAwards).then(a => { s.awards = a; return s; })
     }).then(s => {
-        return request(getOptions('http://s.bf2142.us/getunlocksinfo.aspx?auth=' + auth(s.pid))).then(parser.parse).then(replace).then(getunlocksinfo).then(a => { s.unlocks = a; return s; }).catch(console.log)
+        return request(getOptions('http://s.bf2142.us/getunlocksinfo.aspx?auth=' + auth(s.pid))).then(parser.parse).then(replace).then(getunlocksinfo).then(a => { s.unlocks = a; return s; })
     })
 const getOptions = function (URL) {
     return {
