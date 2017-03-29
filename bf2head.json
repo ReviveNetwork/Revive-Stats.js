@@ -1,7 +1,7 @@
 {
     "bbrs": "bestRoundScore",
-    "bksk": "BestKillStreak",
-    "bmap": "BestRoundMap",
+    "bksk": "bestKillStreak",
+    "bmap": "bestRoundMap",
     "cacp": "captureAssists",
     "cdsc": "comanderScore",
     "cmsc": "combatScore",
