@@ -1,0 +1,45 @@
+{
+    "bf2": {
+        "kits": [
+            "Anti-tank",
+            "Assault",
+            "Engineer",
+            "Medic",
+            "Special-Ops",
+            "Support",
+            "Sniper"
+        ],
+        "vehicles": [
+            "Armor",
+            "Aviator",
+            "Air Defense",
+            "Helicopter",
+            "Transport",
+            "Artillery",
+            "Ground-defense"
+        ]
+    },
+    "bf2142": {
+        "kits": [
+            "Recon",
+            "Assault",
+            "Engineer",
+            "Support"
+        ],
+        "vehicles": [
+            "Battle Walker",
+            "APC",
+            "Tank",
+            "Transport",
+            "FAV",
+            "Static Ground Defense",
+            "Parachute",
+            "Gunship",
+            "POD",
+            "Titan Anti-Air",
+            "Titan Ground Canone",
+            "EU - Goliath",
+            "Hachimoto"
+        ]
+    }
+}

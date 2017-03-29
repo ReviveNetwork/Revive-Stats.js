@@ -1,7 +1,8 @@
 var stats = {
     bf2: require('./bf2'),
     bf2142: require('./bf2142'),
-    auth: require('./authToken')
+    auth: require('./authToken'),
+    constants: require('./constants')
 }
 module.exports = stats;
 //var fs = require('fs');
